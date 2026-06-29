@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Cura Veritas | Knowledge Repository</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../CSS/style.css">
+</head>
+<body>
+
+<!-- SIDEBAR (Hamburger Menu) -->
+<div class="sidebar-overlay" id="sidebarOverlay" onclick="app.toggleMenu()"></div>
+<aside class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <h2>Cura Veritas</h2>
+    <button onclick="app.toggleMenu()" aria-label="Close Menu">✕</button>
+  </div>
+  <nav class="sidebar-nav">
+    <a href="#" onclick="app.navigate('home'); app.toggleMenu();">Home Archive</a>
+    <a href="#" onclick="app.navigate('search'); app.toggleMenu();">Advanced Search</a>
+    <a href="#" onclick="app.navigate('library'); app.toggleMenu();">My Collections</a>
+    <a href="#" onclick="app.navigate('profile'); app.toggleMenu();">Account & Settings</a>
+  </nav>
+</aside>
+
+<main id="app">
+  <!-- HOME SCREEN -->
+  <section class="screen active" id="screen-home">
+    <header class="topbar">
+      <button class="topbar-icon" aria-label="Menu" onclick="app.toggleMenu()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><line x1="4" y1="7" x2="20" y2="7"/><line x1="4" y1="12" x2="20" y2="12"/><line x1="4" y1="17" x2="14" y2="17"/></svg>
+      </button>
+      <span class="topbar-logo">Cura Veritas</span>
+      <button class="topbar-icon" aria-label="Search" onclick="app.navigate('search')">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+      </button>
+    </header>
+
+    <div class="scroll-area">
+      <div class="home-hero">
+        <div class="home-label" style="font-size:11px; font-weight:600; letter-spacing:0.1em; color:var(--text-muted); text-transform:uppercase;">Knowledge Repository</div>
+        <h1 class="home-headline">The quiet search for <br><em>absolute truth.</em></h1>
+        <div class="search-bar" onclick="app.navigate('search')">
+          <span>Inquire the archives...</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </div>
+      </div>
+
+      <div class="section-divider"></div>
+      <div class="section-header">
+        <div><div class="section-title">Curated For You</div><h2 class="section-subtitle">Top Archives</h2></div>
+      </div>
+      <div id="home-curated"></div>
+    </div>
+  </section>
+
+  <!-- SEARCH SCREEN -->
+  <section class="screen" id="screen-search">
+    <header class="topbar">
+      <button class="topbar-icon" onclick="app.goBack()" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M19 12H5M12 19l-7-7 7-7"/></svg></button>
+      <span class="topbar-logo">Search</span>
+      <div style="width:44px;"></div>
+    </header>
+
+    <div class="search-top">
+      <div class="search-input-wrap">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg>
+        <input type="text" id="searchInput" placeholder="Search 50 documents..." onkeyup="app.handleSearch()">
+        <button class="clear-search" id="clearSearchBtn" onclick="app.clearSearch()" aria-label="Clear Search">✖</button>
+      </div>
+    </div>
+    <div class="search-result-header"><h2 class="search-query-title" id="searchTitle">All Archives</h2><div class="search-count" id="searchCount">Loading...</div></div>
+    <div class="scroll-area" id="search-results"></div>
+  </section>
+
+  <!-- LIBRARY SCREEN -->
+  <section class="screen" id="screen-library">
+    <header class="topbar">
+      <div style="width:44px;"></div><span class="topbar-logo">Library</span>
+      <button class="topbar-icon" onclick="app.navigate('search')" aria-label="Search"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg></button>
+    </header>
+    <div class="scroll-area">
+      <div class="library-hero">
+        <h1 class="library-title">My Collections</h1>
+        <div class="library-meta"><span id="libraryCountText">0 Items Saved</span></div>
+        <button class="btn-new-folder" onclick="app.openModal('folderModal')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12h14"/></svg> New Folder</button>
+      </div>
+      <div class="folder-grid" id="library-folders"></div>
+      <div class="section-header" style="margin-top: 10px;"><div class="section-title" id="librarySectionTitle">All Saved Archives</div></div>
+      <div id="library-saved-items"></div>
+    </div>
+  </section>
+
+  <!-- PROFILE SCREEN -->
+  <section class="screen" id="screen-profile">
+    <header class="topbar"><div style="width:44px;"></div><span class="topbar-logo">Account</span><div style="width:44px;"></div></header>
+    <div class="scroll-area">
+      <div id="view-login" class="auth-container">
+        <div class="auth-box">
+          <h1 class="section-subtitle" style="text-align: center; margin-bottom: 8px;">Welcome Back</h1>
+          <input type="text" id="loginUsername" placeholder="Researcher ID" class="modal-input">
+          <input type="password" id="loginPassword" placeholder="Password" class="modal-input">
+          <div class="select-wrapper"><select id="loginRole" class="modal-select"><option value="Researcher">Researcher</option><option value="Teacher/Lecturer">Teacher / Lecturer</option><option value="Student">Student</option></select></div>
+          <button class="btn-primary" style="width: 100%;" onclick="app.login()">Authenticate</button>
+        </div>
+      </div>
+      <div id="view-profile" class="auth-container" style="display: none;">
+        <div class="profile-hero">
+          <img src="../ASSETS/avatar.jpg" alt="Profile" class="avatar">
+          <div class="avatar-fallback" id="avatarFallback" style="display: none;">U</div>
+          <h1 class="profile-name" id="profileName">User</h1>
+          <div class="profile-role" id="profileRoleText">Verified Researcher</div>
+        </div>
+        <div class="stats-grid-profile">
+          <div class="profile-stat"><span class="profile-stat-label">Saved Documents</span><span class="profile-stat-value" id="profileSaveCount">0</span></div>
+          <div class="profile-stat"><span class="profile-stat-label">Clear Data</span><button class="btn-secondary" onclick="app.clearData()">Reset</button></div>
+        </div>
+        <button class="btn-logout" onclick="app.logout()">Log Out</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- BOTTOM NAVIGATION -->
+  <nav class="bottom-nav">
+    <button class="nav-item active" data-target="home" onclick="app.navigate('home')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9,22 9,12 15,12 15,22"/></svg> Home</button>
+    <button class="nav-item" data-target="search" onclick="app.navigate('search')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="11" cy="11" r="7"/><path d="M16.5 16.5L21 21"/></svg> Search</button>
+    <button class="nav-item" data-target="library" onclick="app.navigate('library')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg> Library</button>
+    <button class="nav-item" data-target="profile" onclick="app.navigate('profile')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg> Profile</button>
+  </nav>
+</main>
+
+<!-- MODALS -->
+<div class="modal-overlay" id="folderModal" onclick="app.closeModal(event, 'folderModal')">
+  <div class="modal-content"><h3>Create Collection</h3><input type="text" id="folderNameInput" placeholder="Name..." class="modal-input"><div class="modal-actions"><button class="btn-cancel" onclick="app.closeModal(event, 'folderModal', true)">Cancel</button><button class="btn-confirm" onclick="app.createFolder()">Create</button></div></div>
+</div>
+<div class="modal-overlay" id="saveModal" onclick="app.closeModal(event, 'saveModal')">
+  <div class="modal-content"><h3>Save Archive</h3><div class="select-wrapper"><select id="saveFolderSelect" class="modal-select"></select></div><div class="modal-actions"><button class="btn-cancel" onclick="app.closeModal(event, 'saveModal', true)">Cancel</button><button class="btn-confirm" onclick="app.confirmSave()">Save</button></div></div>
+</div>
+<div id="toastContainer" class="toast-container"></div>
+<script src="../JS/app.js"></script>
+</body>
+</html>
